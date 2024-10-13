@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Juguemos Codificando{% endblock %}
+
+{% block content %}
+<!-- Sección de juegos destacados -->
+<section class="featured-games">
+    <h1>Juegos Más Solicitados</h1>
+    <div class="game-slider">
+        {% for game in games %}
+            <div class="game-item">
+                {% if game.image %}
+                    <img src="{{ game.image.url }}" alt="{{ game.title }}">
+                {% else %}
+                    <img src="{% static 'images/default_game.jpg' %}" alt="Imagen por defecto">
+                {% endif %}
+                <p>{{ game.title }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+<div class="slider-nav">
+    <button id="prevBtn">Anterior</button>
+    <button id="nextBtn">Siguiente</button>
+</div>
+
+<!-- Sección del video -->
+<section class="video-section">
+    <h2>¿Qué es Juguemos Codificando?</h2>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/xF5XdR2sMBE" title="Intro a Nuestra Página" frameborder="0" allowfullscreen></iframe>
+</section>
+
+<!-- Sección de imágenes explicativas -->
+<section class="info-images">
+    <h2>Descubre Nuestros Juegos</h2>
+    <div class="info-image-container">
+        <div class="info-image-item">
+            <h3>Nivel Fácil</h3>
+            <a href="{% url 'games_list' %}?difficulty=Easy">
+            <img src="{% static 'images/ABCRaceGame.jpg' %}" alt="Nivel Fácil">
+            </a>
+            <p>Para aquellos que quieran empezar desde cero, este juego les enseña a pensar como programadores</p>
+        </div>
+        <div class="info-image-item">
+            <h3>Nivel Medio</h3>
+            <a href="{% url 'games_list' %}?difficulty=Medium">
+            <img src="{% static 'images/ScreepsGame.jpg' %}" alt="Nivel Medio">
+            </a>
+            <p>Para quienes se sientan más avanzados y ya quieran jugar enviando comandos de Python</p>
+        </div>
+        <div class="info-image-item">
+            <h3>Nivel Avanzado</h3>
+            <a href="{% url 'games_list' %}?difficulty=Hard">
+            <img src="{% static 'images/SpaceShipGame.jpg' %}" alt="Nivel Difícil">
+            </a>
+            <p>Para aquellos con nivel Dios, codificación de primer nivel con diseño de juegos incorporado</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

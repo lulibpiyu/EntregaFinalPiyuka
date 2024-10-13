@@ -1,0 +1,155 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+}
+
+.logo img {
+    height: 50px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.featured-games {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.game-slider {
+    display: flex;
+    justify-content: space-around;
+    overflow-x: auto;
+    padding: 20px;
+}
+
+.game-item {
+    flex: 0 0 200px;
+    margin: 0 10px;
+    text-align: center;
+}
+.game-item img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.video-section {
+    text-align: center;
+    margin: 20px;
+}
+
+.video-section iframe {
+    border: none;
+    border-radius: 10px;
+}   
+
+.info-images {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.info-image-container {
+    display: flex;
+    justify-content: space-around;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+}
+.info-image-item {
+    flex:1;
+    text-align: center;
+    margin: 0 10px;
+}
+
+.info-image-item img {
+    width: 80%;
+    height: auto;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.info-image-item h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+}
+.info-image-item p {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 10px;
+}
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #2c3e50;
+    color: white;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+#chat-popup {
+    display: none; 
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    height: 400px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+#chat-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#chat-body {
+    padding: 10px;
+    height: calc(100% - 50px);
+    overflow-y: auto;
+}
+
+#chat-input {
+    display: flex;
+    padding: 5px;
+}
+
+#chat-input textarea {
+    flex: 1;
+    resize: none;
+}
+
+#chat-input button {
+    margin-left: 5px;
+}

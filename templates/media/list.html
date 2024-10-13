@@ -1,0 +1,11 @@
+<h2>Uploaded Media Files</h2>
+<ul>
+    {% for file in files %}
+        <li>
+            <a href="{{ file.file.url }}">{{ file.title or file.file.name }}</a>
+            <p>{{ file.description }}</p>
+        </li>
+    {% empty %}
+        <li>No files uploaded yet.</li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Juguemos{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="{% static 'images/logo.jpg' %}" alt="Logo" class="logo-image">
+        </div>
+        <nav class="navbar">
+            <ul>
+                <li><a href="{% url 'leaderboard' %}">LeaderBoard</a></li>
+                <li><a href="{% url 'games_list' %}">Lista de Juegos</a></li>
+                
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'modificar_contenido' %}">Modificar Contenido</a></li> 
+                    <li>
+                        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit">Logout</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'register' %}">Registrarse</a></li>
+                    <li><a href="{% url 'login' %}">Iniciar Sesión</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Franja separadora -->
+    <div class="separator"></div>
+
+    <!-- Pie de página -->
+    <footer>
+        <h2>Acceso a Otras Secciones</h2>
+        <ul>
+            <li><a href="{% url 'about' %}">Sobre Nosotros</a></li>
+            <li><a href="{% url 'announcements' %}">Anuncios</a></li>
+            <li><a href="{% url 'blog' %}">Blog</a></li>
+            <li><a href="{% url 'games_list' %}">Lista de Juegos</a></li>
+            <li><a href="{% url 'leaderboard' %}">Leaderboard</a></li>
+            <li><a href="{% url 'create_game' %}">Crea tu Propio Juego</a></li>
+            <li><a href="{% url 'home' %}">Página Principal</a></li>
+        </ul>
+        <p>© 2024 Juguemos con Código - Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Chat emergente -->
+    <div id="chat-popup">
+        <div id="chat-header" onclick="toggleChat()">
+            Chat
+        </div>
+        <div id="chat-body">
+            <ul id="message-list">
+                <!-- Aquí se cargarán los mensajes -->
+            </ul>
+        </div>
+        <div id="chat-input">
+            <textarea id="message-input" placeholder="Escribe un mensaje..."></textarea>
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat() {
+            const chatPopup = document.getElementById('chat-popup');
+            chatPopup.style.display = chatPopup.style.display === 'none' || chatPopup.style.display === '' ? 'block' : 'none';
+        }
+
+        function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const messageContent = messageInput.value;
+
+            if (messageContent.trim() === '') return;
+
+            fetch('{% url "send_message" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify({
+                    recipient: '{{ user.username }}',
+                    message: messageContent,
+                }),
+            })
+            .then(response => {
+                if (response.ok) {
+                    const messageList = document.getElementById('message-list');
+                    const newMessage = document.createElement('li');
+                    newMessage.innerHTML = `<strong>Tú:</strong> ${messageContent}`;
+                    messageList.appendChild(newMessage);
+                    messageInput.value = '';
+                } else {
+                    console.error('Error al enviar el mensaje');
+                }
+            });
+        }
+
+        window.onload = function() {
+            const chatPopup = document.getElementById('chat-popup');
+            chatPopup.style.display = 'none';
+            loadMessages();
+        };
+
+        function loadMessages() {
+            fetch('{% url "get_messages" %}', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const messageList = document.getElementById('message-list');
+                messageList.innerHTML = '';
+                data.messages.forEach(msg => {
+                    const messageItem = document.createElement('li');
+                    messageItem.innerHTML = `<strong>${msg.sender__username}:</strong> ${msg.message}`;
+                    messageList.appendChild(messageItem);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
